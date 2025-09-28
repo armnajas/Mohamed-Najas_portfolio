@@ -98,6 +98,20 @@ const Navigation = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuOpen && !event.target.closest('.nav-menu') && !event.target.closest('.nav-toggle')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <nav className={`top-navigation ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
