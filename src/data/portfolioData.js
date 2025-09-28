@@ -631,21 +631,13 @@ export const workExperience = [
     status: "Current",
     period: "2024 - Present",
     responsibilities: [
-      "Implementing and Planning a Single Domain Environment",
-      "Installing and Configuring 2003, 2008, 2012, 2016, 2019 & 2022 Server",
-      "Maintaining DNS Server Active Directory Management with Security Policy",
-      "Implementing and Maintaining Child Server Environment or Department Wise Network Solutions",
-      "Real-Time Backup Server Solutions",
-      "Planning and Maintaining Disaster Management Solutions for File Server",
-      "VPN Solutions",
-      "Implementing Mail Server Solution for Company (POP3 or IMAP)",
-      "Planning and Implementing Short-Distance and Long-Distance Wireless Bridging Solutions",
-      "Implementing and Planning Internet Distribution and Proxy Server Management",
-      "Maintaining Web Server and Online Software Solutions (ERP)",
-      "Implementing and Maintaining FTP Server and NAS, SAN Solutions",
-      "Planning Backup Power Solutions or Solar Power Solutions for a Company",
-      "Handling All Kinds of Internet Routers (Port Forwarding and Port Mapping)",
-      "IP phone configuration"
+      "Architected single-domain and child-domain environments to align with departmental network needs.",
+      "Deployed and hardened Windows Server 2003–2022 instances, configuring Active Directory, DNS, and Group Policy baselines.",
+      "Implemented secure VPN, proxy, and internet distribution services to support on-site and remote teams.",
+      "Built automated backup, NAS/SAN storage, and disaster-recovery workflows for critical file and application servers.",
+      "Maintained hybrid mail (POP3/IMAP), web, FTP, and ERP platforms with continuous monitoring and patch cycles.",
+      "Engineered long-range wireless bridging, IP telephony, and router port-forwarding to extend connectivity across locations.",
+      "Coordinated backup power and solar-ready contingencies to uphold network uptime during outages."
     ]
   },
   {
@@ -656,10 +648,10 @@ export const workExperience = [
     status: "since 2021",
     period: "2021 - 2023",
     responsibilities: [
-      "Provided technical support for printers and PCs, both onsite and via TeamViewer",
-      "Diagnosed system issues and ensured smooth operations",
-      "Managed inventory, labeled products, and updated records",
-      "Handled sales transactions and maintained accurate documentation"
+      "Delivered hands-on and remote (TeamViewer) support for desktops, laptops, and peripherals, resolving incidents end-to-end.",
+      "Performed root-cause diagnostics on hardware and OS issues, reducing repeat service requests.",
+      "Owned device inventory: labeling, tracking stock levels, and updating procurement records in real time.",
+      "Processed point-of-sale transactions while maintaining accurate customer and warranty documentation."
     ]
   },
   {
@@ -670,8 +662,8 @@ export const workExperience = [
     status: "since 2020",
     period: "2020 - Present",
     responsibilities: [
-      "Designed flyers, logos, and presentations",
-      "Edited videos for various projects, enhancing visual storytelling"
+      "Design brand assets—including flyers, logos, and pitch decks—that align with client messaging and timelines.",
+      "Produce and edit event, marketing, and social media videos with motion graphics to elevate storytelling."
     ]
   }
 ];
