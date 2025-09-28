@@ -18,27 +18,24 @@
   margin-top: 3rem;
 }
 
+
 .experience-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: var(--shadow-card);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  transition: none;
   position: relative;
-  backdrop-filter: blur(20px);
-  height: fit-content;
-  will-change: transform, box-shadow;
+  backdrop-filter: none;
+  height: auto;
+  will-change: auto;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
 }
 
-.experience-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--primary);
-}
+
 
 .experience-card.clickable {
   cursor: pointer;
@@ -455,10 +452,6 @@
 .experience-card-wrapper.card-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-.experience-card-wrapper:hover .experience-card {
-  transform: translateY(-8px) scale(1.01);
 }
 
 .experience-bg-elements {
