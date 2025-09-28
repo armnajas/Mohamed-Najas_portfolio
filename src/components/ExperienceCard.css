@@ -1,26 +1,20 @@
 .experience-card {
   background: rgba(13, 17, 23, 0.8);
-  border-radius: var(--radius-2xl);
-  border: 1px solid rgba(66, 133, 244, 0.5);
-  backdrop-filter: blur(30px) saturate(200%) brightness(1.1);
-  -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.1);
+  border-radius: 20px;
+  border: 1px solid rgba(66, 133, 244, 0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   padding: 0;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   width: 100%;
   margin-bottom: 24px;
-  will-change: transform, box-shadow;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(66, 133, 244, 0.3),
-    0 0 20px rgba(66, 133, 244, 0.1),
-    inset 0 1px 0 rgba(240, 246, 252, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(66, 133, 244, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .experience-card::before {
@@ -29,10 +23,10 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #4285f4, #1a73e8, #34a853);
+  height: 2px;
+  background: linear-gradient(90deg, #4285f4, #1a73e8);
+  border-radius: 20px 20px 0 0;
   z-index: 2;
-  transition: all 0.3s ease;
 }
 
 
@@ -41,16 +35,24 @@
   z-index: 2;
 }
 
+/* Simple Hover Effects */
+.experience-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(66, 133, 244, 0.5);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(66, 133, 244, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 
 .experience-card.expanded {
-  transform: none;
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(20, 28, 40, 0.55);
+  border-color: rgba(66, 133, 244, 0.6);
+  background: rgba(15, 20, 30, 0.9);
   box-shadow:
-    0 18px 38px rgba(8, 12, 22, 0.4),
-    0 6px 16px rgba(8, 12, 22, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(8, 12, 22, 0.35);
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(66, 133, 244, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .card-header {
@@ -442,3 +444,5 @@
     transform: translateY(0);
   }
 }
+
+

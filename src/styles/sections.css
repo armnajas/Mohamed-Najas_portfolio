@@ -505,6 +505,7 @@
   left: 60%;
 }
 
+
 @keyframes floatParticle {
   0%, 100% {
     transform: translateY(0) rotate(0deg);
@@ -516,10 +517,26 @@
   }
 }
 
-/* Responsive Design for Experience Section */
-@media (max-width: 768px) {
+
+/* Enhanced Responsive Design for Experience Section */
+@media (max-width: 992px) {
   .experience-section {
     padding: 6rem 0;
+  }
+  
+  .experience-container {
+    padding: 0 1.5rem;
+  }
+  
+  .experience-cards-grid {
+    gap: 2.5rem;
+    margin-top: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .experience-section {
+    padding: 5rem 0;
   }
   
   .experience-container {
@@ -537,8 +554,12 @@
     padding: 4rem 0;
   }
   
+  .experience-container {
+    padding: 0 0.8rem;
+  }
+  
   .experience-cards-grid {
-    gap: 1.25rem;
+    gap: 1.5rem;
     margin-top: 2.5rem;
   }
 }
@@ -557,6 +578,42 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+/* Journey Section Responsive Design */
+@media (max-width: 992px) {
+  .journey-section {
+    padding: 6rem 0;
+  }
+  
+  .journey-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .journey-section {
+    padding: 5rem 0;
+  }
+  
+  .journey-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-section {
+    padding: 4rem 0;
+  }
+  
+  .journey-grid {
+    gap: 1.25rem;
+    padding: 0 0.8rem;
+  }
 }
 
 /* ===== QUALIFICATIONS SECTION ===== */
