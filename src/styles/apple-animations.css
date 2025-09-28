@@ -1,0 +1,259 @@
+/* Apple-style Animation Enhancements */
+
+/* Smooth scrolling improvements */
+html {
+  scroll-behavior: unset; /* Let Lenis handle this */
+}
+
+/* Apple-style easing curves */
+:root {
+  --apple-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --apple-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --apple-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --apple-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --apple-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Enhanced magnetic button styles */
+.magnetic-btn {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s var(--apple-ease-out);
+}
+
+.magnetic-btn:hover::before {
+  left: 100%;
+}
+
+/* Apple-style text reveal containers */
+.word-reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.char-reveal {
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+.line-reveal {
+  display: block;
+  overflow: hidden;
+}
+
+/* Enhanced parallax containers */
+.parallax-container {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Apple-style card hover effects */
+.skill-card,
+.project-card,
+.certificate-item {
+  transition: all 0.4s var(--apple-ease-out);
+  will-change: transform, box-shadow;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 212, 255, 0.15),
+    0 0 0 1px rgba(0, 212, 255, 0.1);
+}
+
+.project-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 212, 255, 0.2);
+}
+
+/* Apple-style section transitions */
+section {
+  will-change: transform, opacity;
+}
+
+/* Enhanced hero animations */
+.hero-section {
+  perspective: 1000px;
+}
+
+.hero-img {
+  transition: all 0.6s var(--apple-ease-out);
+  will-change: transform;
+}
+
+.hero-img:hover {
+  transform: scale(1.05) rotateY(5deg);
+}
+
+/* Apple-style navigation enhancements */
+.top-navigation {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: all 0.4s var(--apple-ease-out);
+}
+
+.nav-item {
+  transition: all 0.3s var(--apple-ease-out);
+  position: relative;
+}
+
+/* Mobile menu animations */
+.nav-menu {
+  transition: all 0.3s var(--apple-ease-out);
+}
+
+.nav-toggle span {
+  transition: all 0.3s var(--apple-ease-out);
+}
+
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Apple-style scroll indicators */
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(0, 212, 255, 0.2);
+  z-index: 9999;
+}
+
+.scroll-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--gradient-primary);
+  transition: width 0.1s ease-out;
+}
+
+/* Apple-style loading states */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Apple-style focus states */
+*:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced typography animations */
+.section-title {
+  perspective: 1000px;
+}
+
+.section-title .word-reveal {
+  transform-style: preserve-3d;
+}
+
+/* Apple-style button press effects */
+.action-btn:active {
+  transform: scale(0.98);
+  transition: transform 0.1s var(--apple-ease-in);
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, .nav-item, .skill-card, .project-card {
+  transition: all 0.3s var(--apple-ease-out);
+}
+
+/* Apple-style glass morphism */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Performance optimizations */
+.hero-background-elements,
+.social-orbs,
+.particle-system {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Apple-style selection */
+::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: white;
+}
+
+/* Enhanced scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}
