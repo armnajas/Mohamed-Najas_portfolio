@@ -14,7 +14,6 @@ const Certificates = () => {
   const firstRowRef = useRef(null);
   const badgesRowRef = useRef(null);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
-  const [isInView, setIsInView] = useState(false);
 
   const openModal = (certificate) => {
     // Store current scroll position
@@ -127,8 +126,6 @@ const Certificates = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
-        
         // Pause/resume animations based on visibility
         if (firstRowRef.current && badgesRowRef.current) {
           const firstTrack = firstRowRef.current;
@@ -345,7 +342,7 @@ const Certificates = () => {
               <i className="fas fa-times"></i>
             </button>
             <div className="modal-content">
-              <img
+              <OptimizedImage
                 src={selectedCertificate.logo}
                 alt={`${selectedCertificate.title} Certificate`}
                 className="modal-certificate-image"

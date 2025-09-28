@@ -27,7 +27,6 @@ const Projects = () => {
 
       // Prevent touch scrolling on mobile but allow modal scrolling
       const preventTouchMove = (e) => {
-        // Allow scrolling within modal
         if (e.target.closest('.project-modal')) {
           return;
         }
@@ -35,7 +34,6 @@ const Projects = () => {
       };
 
       const preventWheel = (e) => {
-        // Allow scrolling within modal
         if (e.target.closest('.project-modal')) {
           return;
         }
@@ -44,32 +42,28 @@ const Projects = () => {
 
       document.addEventListener('touchmove', preventTouchMove, { passive: false });
       document.addEventListener('wheel', preventWheel, { passive: false });
-    } else {
-      // Modal is closing - restore scroll position
-      const savedScrollY = document.body.getAttribute('data-scroll-y');
 
-      // Remove modal-open class and styles
-      document.body.classList.remove('modal-open');
-      document.body.style.top = '';
-
-      // Restore scroll position smoothly
-      if (savedScrollY) {
-        const scrollPosition = parseInt(savedScrollY);
-        window.scrollTo({
-          top: scrollPosition,
-          behavior: 'instant'
-        });
-        document.body.removeAttribute('data-scroll-y');
-      }
+      return () => {
+        document.removeEventListener('touchmove', preventTouchMove);
+        document.removeEventListener('wheel', preventWheel);
+      };
     }
 
-    // Cleanup function only for removing event listeners when component unmounts
-    return () => {
-      if (selectedProject) {
-        document.removeEventListener('touchmove', () => {});
-        document.removeEventListener('wheel', () => {});
-      }
-    };
+    // Modal is closing - restore scroll position
+    const savedScrollY = document.body.getAttribute('data-scroll-y');
+    document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+
+    if (savedScrollY) {
+      const scrollPosition = parseInt(savedScrollY, 10);
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: 'instant'
+      });
+      document.body.removeAttribute('data-scroll-y');
+    }
+
+    return undefined;
   }, [selectedProject]);
 
   // Intersection Observer for repeating intro animations - triggers every time

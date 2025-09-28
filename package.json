@@ -2,7 +2,7 @@
   "name": "portfolio-react",
   "version": "0.1.0",
   "private": true,
-  "_homepage": "https://armnajas.github.io/portfolio-react",
+  "homepage": "https://armnajas.github.io/Mohamed-Najas_portfolio",
   "dependencies": {
     "framer-motion": "^12.23.1",
     "gsap": "^3.13.0",

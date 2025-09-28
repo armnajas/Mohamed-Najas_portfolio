@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { qualifications } from '../data/portfolioData';
 import AppleTextReveal from './AppleTextReveal';
 import ParallaxContainer from './ParallaxContainer';
+import OptimizedImage from './OptimizedImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -168,7 +169,7 @@ const Qualifications = () => {
                     {/* Inline Campus Logo (Left side of title) */}
                     {item.provider && item.campusLogo && item.inlineLogoPosition === "left" && (
                       <div className="campus-logo-inline campus-logo-left">
-                        <img
+                        <OptimizedImage
                           src={item.provider.logo}
                           alt={item.provider.name}
                           title={item.provider.name}
@@ -179,7 +180,7 @@ const Qualifications = () => {
                     {/* Inline Campus Logo (Right side of title) */}
                     {item.provider && item.campusLogo && item.inlineLogoPosition === "right" && (
                       <div className="campus-logo-inline campus-logo-right">
-                        <img
+                        <OptimizedImage
                           src={item.provider.logo}
                           alt={item.provider.name}
                           title={item.provider.name}
@@ -220,7 +221,7 @@ const Qualifications = () => {
                 {/* Campus Logo (Over Top Border) - Only if not inline */}
                 {item.provider && item.campusLogo && !item.inlineLogoPosition && (
                   <div className="campus-logo-top">
-                    <img
+                    <OptimizedImage
                       src={item.provider.logo}
                       alt={item.provider.name}
                       title={item.provider.name}
@@ -231,7 +232,7 @@ const Qualifications = () => {
                 {/* Regular Provider Logo */}
                 {item.provider && !item.campusLogo && (
                   <div className="provider-logo">
-                    <img
+                    <OptimizedImage
                       src={item.provider.logo}
                       alt={item.provider.name}
                       title={item.provider.name}
@@ -295,7 +296,7 @@ const Qualifications = () => {
               {selectedItem.certificateImage && (
                 <div className="modal-certificate">
                   <div className="certificate-container">
-                    <img
+                    <OptimizedImage
                       src={selectedItem.certificateImage}
                       alt={`${selectedItem.title} Certificate`}
                       className="certificate-image"

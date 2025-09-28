@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { navigation } from '../data/portfolioData';
 import { useAnimation } from '../context/AnimationContext';
 
@@ -7,30 +7,66 @@ const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollTo } = useAnimation();
+  const sectionsRef = useRef([]);
+  const activeSectionRef = useRef('home');
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section[id]');
-      const scrollPos = window.scrollY + 100;
+    sectionsRef.current = Array.from(document.querySelectorAll('section[id]'));
 
-      // Update scroll state for navbar styling
-      setIsScrolled(window.scrollY > 50);
+    const updateScrollState = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const scrollPos = scrollY + 120;
 
-      sections.forEach(section => {
+      setIsScrolled(scrollY > 50);
+
+      let nextActive = activeSectionRef.current;
+
+      for (const section of sectionsRef.current) {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
 
         if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-          setActiveSection(sectionId);
+          nextActive = section.getAttribute('id');
+          break;
         }
-      });
+      }
+
+      if (!nextActive && sectionsRef.current.length > 0) {
+        nextActive = sectionsRef.current[0].getAttribute('id');
+      }
+
+      if (nextActive && nextActive !== activeSectionRef.current) {
+        activeSectionRef.current = nextActive;
+        setActiveSection(nextActive);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial call
+    let ticking = false;
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateScrollState();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    const handleResize = () => {
+      sectionsRef.current = Array.from(document.querySelectorAll('section[id]'));
+      updateScrollState();
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    updateScrollState();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const handleNavClick = (e, href) => {

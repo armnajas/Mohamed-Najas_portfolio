@@ -439,7 +439,7 @@ export const qualifications = [
     tags: ["Office Management", "ICAS", "Workshop"],
     provider: {
       name: "ICAS Campus",
-      logo: "/images/icas-logo.png"
+      logo: "/images/ICAS.png"
     },
     campusLogo: true,
     inlineLogoPosition: "left",
@@ -454,9 +454,9 @@ export const qualifications = [
     side: "left",
     tags: ["Psychology", "Counselling", "ICAS"],
     provider: {
-      name: "ICAS Campus",
-      logo: "/images/icas-logo.png"
-    },
+        name: "ICAS Campus",
+        logo: "/images/ICAS.png"
+      },
     campusLogo: true,
     inlineLogoPosition: "left",
     certificateImage: "/images/certificates/001.jpg"

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,8 +7,50 @@ gsap.registerPlugin(ScrollTrigger);
 
 const useSmoothScroll = () => {
   const lenisRef = useRef(null);
+  const rafIdRef = useRef(null);
+  const [isLenisEnabled, setIsLenisEnabled] = useState(false);
 
   useEffect(() => {
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+
+    const evaluateShouldEnable = () => {
+      const prefersReducedMotion = reducedMotionQuery.matches;
+      const isCoarsePointer = coarsePointerQuery.matches;
+      const isSmallViewport = window.innerWidth < 1024;
+
+      // Disable Lenis on touch devices, small screens, or when reduced motion is preferred
+      const shouldEnable = !prefersReducedMotion && !isCoarsePointer && !isSmallViewport;
+
+      setIsLenisEnabled(shouldEnable);
+    };
+
+    evaluateShouldEnable();
+
+    reducedMotionQuery.addEventListener('change', evaluateShouldEnable);
+    coarsePointerQuery.addEventListener('change', evaluateShouldEnable);
+    window.addEventListener('resize', evaluateShouldEnable);
+
+    return () => {
+      reducedMotionQuery.removeEventListener('change', evaluateShouldEnable);
+      coarsePointerQuery.removeEventListener('change', evaluateShouldEnable);
+      window.removeEventListener('resize', evaluateShouldEnable);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLenisEnabled) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
+      if (rafIdRef.current) {
+        window.cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      return;
+    }
+
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 0.8, // Faster duration for better performance
@@ -28,22 +70,42 @@ const useSmoothScroll = () => {
     lenis.on('scroll', ScrollTrigger.update);
 
     // Optimized GSAP integration
-    const raf = (time) => {
-      lenis.raf(time * 1000);
+    const tick = (time) => {
+      lenis.raf(time);
+      rafIdRef.current = window.requestAnimationFrame(tick);
     };
-    
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+
+    rafIdRef.current = window.requestAnimationFrame(tick);
 
     // Cleanup
     return () => {
       lenis.destroy();
-      gsap.ticker.remove(raf);
+      if (rafIdRef.current) {
+        window.cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
     };
-  }, []);
+  }, [isLenisEnabled]);
 
   const scrollTo = (target, options = {}) => {
     if (lenisRef.current) {
+      if (!isLenisEnabled) {
+        // If Lenis is disabled after initialization, fall back to native scroll
+        if (typeof target === 'object' && target instanceof HTMLElement) {
+          const offset = options.offset || 0;
+          const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: elementPosition + offset,
+            behavior: options.immediate ? 'auto' : 'smooth'
+          });
+        } else if (typeof target === 'number') {
+          window.scrollTo({
+            top: target,
+            behavior: options.immediate ? 'auto' : 'smooth'
+          });
+        }
+        return;
+      }
       
       // Handle different target types
       if (typeof target === 'object' && target instanceof HTMLElement) {

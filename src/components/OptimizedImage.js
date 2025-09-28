@@ -11,8 +11,8 @@ const OptimizedImage = ({
   showPlaceholder = true,
   ...props 
 }) => {
-  const { imageLoaded, imageError } = useImageLoader(src);
-  const { imageLoaded: fallbackLoaded, imageError: fallbackError } = useImageLoader(fallbackSrc);
+  const { imageLoaded, imageError, imageSrc } = useImageLoader(src);
+  const { imageLoaded: fallbackLoaded, imageError: fallbackError, imageSrc: fallbackImageSrc } = useImageLoader(fallbackSrc);
 
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -29,10 +29,10 @@ const OptimizedImage = ({
   };
 
   // If main image failed, try fallback
-  if (imageError && fallbackSrc && !fallbackError && fallbackLoaded) {
+  if (imageError && fallbackSrc && !fallbackError && fallbackLoaded && fallbackImageSrc) {
     return (
       <motion.img
-        src={fallbackSrc}
+        src={fallbackImageSrc}
         alt={alt}
         className={className}
         loading={loading}
@@ -95,17 +95,19 @@ const OptimizedImage = ({
         </motion.div>
       )}
       
-      <motion.img
-        src={src}
-        alt={alt}
-        className={className}
-        loading={loading}
-        variants={imageVariants}
-        initial="hidden"
-        animate={imageLoaded ? "visible" : "hidden"}
-        style={{ display: imageLoaded ? 'block' : 'none' }}
-        {...props}
-      />
+      {imageSrc && (
+        <motion.img
+          src={imageSrc}
+          alt={alt}
+          className={className}
+          loading={loading}
+          variants={imageVariants}
+          initial="hidden"
+          animate={imageLoaded ? "visible" : "hidden"}
+          style={{ display: imageLoaded ? 'block' : 'none' }}
+          {...props}
+        />
+      )}
       
       <style jsx>{`
         @keyframes spin {
