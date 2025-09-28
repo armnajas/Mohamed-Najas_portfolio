@@ -6,11 +6,13 @@ const OptimizedImage = ({
   src, 
   alt, 
   className = '', 
-  fallbackSrc = '/placeholder.jpg',
+  fallbackSrc = null,
   loading = 'lazy',
+  showPlaceholder = true,
   ...props 
 }) => {
   const { imageLoaded, imageError } = useImageLoader(src);
+  const { imageLoaded: fallbackLoaded, imageError: fallbackError } = useImageLoader(fallbackSrc);
 
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -26,7 +28,24 @@ const OptimizedImage = ({
     visible: { opacity: 1 }
   };
 
-  if (imageError) {
+  // If main image failed, try fallback
+  if (imageError && fallbackSrc && !fallbackError && fallbackLoaded) {
+    return (
+      <motion.img
+        src={fallbackSrc}
+        alt={alt}
+        className={className}
+        loading={loading}
+        variants={imageVariants}
+        initial="hidden"
+        animate="visible"
+        {...props}
+      />
+    );
+  }
+
+  // If both main and fallback failed, show placeholder
+  if (imageError && (!fallbackSrc || fallbackError) && showPlaceholder) {
     return (
       <motion.div 
         className={`image-placeholder ${className}`}
@@ -39,7 +58,8 @@ const OptimizedImage = ({
           alignItems: 'center',
           justifyContent: 'center',
           color: '#8b92a5',
-          fontSize: '0.9rem'
+          fontSize: '0.9rem',
+          minHeight: '100px'
         }}
         {...props}
       >

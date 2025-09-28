@@ -5,6 +5,15 @@ const useImageLoader = (src) => {
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
+    if (!src) {
+      setImageError(true);
+      return;
+    }
+
+    // Reset states when src changes
+    setImageLoaded(false);
+    setImageError(false);
+
     const img = new Image();
     
     img.onload = () => {
@@ -13,11 +22,20 @@ const useImageLoader = (src) => {
     };
     
     img.onerror = () => {
+      console.warn(`Failed to load image: ${src}`);
       setImageLoaded(false);
       setImageError(true);
     };
+
+    // Handle path resolution for development vs production
+    let imageSrc = src;
     
-    img.src = src;
+    // If in development and src starts with /, use process.env.PUBLIC_URL
+    if (process.env.NODE_ENV === 'development' && src.startsWith('/')) {
+      imageSrc = process.env.PUBLIC_URL + src;
+    }
+    
+    img.src = imageSrc;
     
     return () => {
       img.onload = null;

@@ -9,14 +9,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
   const sectionRef = useRef(null);
-  const gridRef = useRef(null);
+  const skillsContainerRef = useRef(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !gridRef.current) return;
+    if (!sectionRef.current || !skillsContainerRef.current) return;
 
-    const cards = gridRef.current.querySelectorAll('.skill-card');
+    const categories = skillsContainerRef.current.querySelectorAll('.skill-category');
+    const skillTags = skillsContainerRef.current.querySelectorAll('.skill-tag');
 
-    // Apple-style staggered card animation
+    // Apple-style staggered animation
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -26,75 +27,70 @@ const Skills = () => {
       }
     });
 
-    cards.forEach((card, index) => {
-      // Card entrance animation
-      tl.fromTo(card,
+    // Animate categories first
+    categories.forEach((category, index) => {
+      tl.fromTo(category,
         {
-          y: 15,
+          y: 20,
           opacity: 0
         },
         {
           y: 0,
           opacity: 1,
-          duration: 0.3,
-          ease: "power1.out"
-        }, index * 0.03
-      );
-
-      // No individual skill item animations - only main card animation
-
-      // Enhanced hover effect setup
-      const handleMouseEnter = () => {
-        gsap.to(card, {
-          y: -16,
-          scale: 1.03,
-          rotationY: -2,
-          rotationX: 3,
-          boxShadow: "0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(66, 133, 244, 0.4)",
           duration: 0.4,
-          ease: "power3.out"
-        });
+          ease: "power2.out"
+        }, index * 0.1
+      );
+    });
 
-        // Animate list items on card hover
-        const listItems = card.querySelectorAll('li');
-        gsap.to(listItems, {
-          x: 8,
-          stagger: 0.05,
+    // Then animate skill tags with stagger
+    tl.fromTo(skillTags,
+      {
+        y: 15,
+        opacity: 0,
+        scale: 0.9
+      },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.3,
+        ease: "power2.out",
+        stagger: 0.02
+      }, "-=0.2"
+    );
+
+    // Enhanced hover effects for skill tags
+    skillTags.forEach(tag => {
+      const handleMouseEnter = () => {
+        gsap.to(tag, {
+          scale: 1.05,
+          y: -3,
+          boxShadow: "0 8px 25px rgba(66, 133, 244, 0.4), 0 0 20px rgba(66, 133, 244, 0.2)",
           duration: 0.3,
           ease: "power2.out"
         });
       };
 
       const handleMouseLeave = () => {
-        gsap.to(card, {
-          y: 0,
+        gsap.to(tag, {
           scale: 1,
-          rotationY: 0,
-          rotationX: 0,
-          boxShadow: "0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(66, 133, 244, 0.1)",
-          duration: 0.4,
-          ease: "power3.out"
-        });
-
-        // Reset list items
-        const listItems = card.querySelectorAll('li');
-        gsap.to(listItems, {
-          x: 0,
-          stagger: 0.03,
+          y: 0,
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(66, 133, 244, 0.1)",
           duration: 0.3,
           ease: "power2.out"
         });
       };
 
-      card.addEventListener('mouseenter', handleMouseEnter);
-      card.addEventListener('mouseleave', handleMouseLeave);
+      tag.addEventListener('mouseenter', handleMouseEnter);
+      tag.addEventListener('mouseleave', handleMouseLeave);
     });
 
     return () => {
       tl.kill();
-      cards.forEach(card => {
-        card.removeEventListener('mouseenter', () => {});
-        card.removeEventListener('mouseleave', () => {});
+      skillTags.forEach(tag => {
+        tag.removeEventListener('mouseenter', () => {});
+        tag.removeEventListener('mouseleave', () => {});
       });
     };
   }, []);
@@ -111,19 +107,29 @@ const Skills = () => {
         </AppleTextReveal>
       </ParallaxContainer>
 
-      <div ref={gridRef} className="skills-grid">
-        {skills.map((skillGroup, index) => (
-          <div key={skillGroup.category} className="skill-card" data-card-index={index}>
-            <h4>
-              <span className="category-title">{skillGroup.category}</span>
+      <div ref={skillsContainerRef} className="skills-container">
+        {skills.map((skillGroup, groupIndex) => (
+          <div key={skillGroup.category} className="skill-category" data-category-index={groupIndex}>
+            <h4 className="category-title">
+              <span className="category-icon">
+                {groupIndex === 0 && <i className="fas fa-code"></i>}
+                {groupIndex === 1 && <i className="fas fa-shield-alt"></i>}
+                {groupIndex === 2 && <i className="fas fa-tools"></i>}
+              </span>
+              {skillGroup.category}
             </h4>
-            <ul className="skill-list">
-              {skillGroup.items.map((item, itemIndex) => (
-                <li key={item} className="skill-item" data-skill-index={itemIndex}>
-                  <span className="skill-name">{item}</span>
-                </li>
+            <div className="skills-tags">
+              {skillGroup.items.map((skill, skillIndex) => (
+                <span 
+                  key={skill} 
+                  className="skill-tag" 
+                  data-skill-index={skillIndex}
+                  data-category={groupIndex}
+                >
+                  {skill}
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
       </div>

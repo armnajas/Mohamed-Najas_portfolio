@@ -2,12 +2,13 @@ import { useRef, useEffect, useState } from 'react';
 import { workExperience } from '../data/portfolioData';
 import AppleTextReveal from './AppleTextReveal';
 import ParallaxContainer from './ParallaxContainer';
+import ExperienceCard from './ExperienceCard';
 
 const Experience = () => {
-  const roadmapRef = useRef(null);
+  const containerRef = useRef(null);
   const [visibleCards, setVisibleCards] = useState(new Set());
 
-  // Intersection Observer for repeating intro animations - triggers every time
+  // Intersection Observer for card animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -15,10 +16,8 @@ const Experience = () => {
           const cardId = entry.target.getAttribute('data-card-id');
           if (cardId) {
             if (entry.isIntersecting) {
-              // Add card to visible set to trigger animation
               setVisibleCards(prev => new Set([...prev, parseInt(cardId)]));
             } else {
-              // Remove card from visible set when out of view to allow re-triggering
               setVisibleCards(prev => {
                 const newSet = new Set(prev);
                 newSet.delete(parseInt(cardId));
@@ -29,33 +28,30 @@ const Experience = () => {
         });
       },
       {
-        threshold: 0.2,
+        threshold: 0.1,
         rootMargin: '50px'
       }
     );
 
-    // Delay observer setup to ensure DOM elements are rendered
     const setupObserver = () => {
-      const roadmapItems = document.querySelectorAll('.experience-roadmap-item');
-      if (roadmapItems.length > 0) {
-        roadmapItems.forEach((item) => observer.observe(item));
+      const cardElements = document.querySelectorAll('.experience-card-wrapper');
+      if (cardElements.length > 0) {
+        cardElements.forEach((item) => observer.observe(item));
       } else {
-        // Retry after a short delay if elements not found
         setTimeout(setupObserver, 100);
       }
     };
 
-    // Setup observer after component renders
     setTimeout(setupObserver, 100);
 
     return () => {
-      const roadmapItems = document.querySelectorAll('.experience-roadmap-item');
-      roadmapItems.forEach(item => observer.unobserve(item));
+      const cardElements = document.querySelectorAll('.experience-card-wrapper');
+      cardElements.forEach(item => observer.unobserve(item));
     };
   }, []);
 
   return (
-    <section id="experience" className="experience-journey-section">
+    <section id="experience" className="experience-section">
       <ParallaxContainer speed={0.2}>
         <AppleTextReveal
           className="section-title"
@@ -65,70 +61,40 @@ const Experience = () => {
           &lt;Work Experience /&gt;
         </AppleTextReveal>
       </ParallaxContainer>
-      <div className="journey-container">
-        <div className="curved-roadmap" ref={roadmapRef}>
-          {/* Clean Animated Vertical Line */}
-          <div className="vertical-line"></div>
-
-          {/* Experience Items */}
-          <div className="roadmap-items">
-            {workExperience.map((job, index) => {
-              const isVisible = visibleCards.has(job.id);
-              const animationSide = 'intro-from-right'; // All cards come from right
-
-              return (
-                <div
-                  key={job.id}
-                  className={`experience-roadmap-item roadmap-item right item-${index + 1} ${isVisible ? 'intro-visible' : 'intro-hidden'} ${animationSide}`}
-                  data-card-id={job.id}
-                  style={{ '--delay': `${index * 0.3}s` }}
-                >
-                <div className="roadmap-connector">
-                  <div className="roadmap-node">
-                    <div className="node-inner">
-                      <i className="fas fa-briefcase"></i>
-                    </div>
-                    <div className="node-pulse"></div>
-                  </div>
-                </div>
-
-                <div className="roadmap-content">
-                  <div className="roadmap-card">
-                    <div className="card-header">
-                      <h3>{job.title}</h3>
-                      <span className="roadmap-date">{job.period}</span>
-                    </div>
-                    <h4 className="company-name">{job.company}</h4>
-                    <p className="card-description">
-                      Duration: {job.duration} • Status: {job.status}
-                    </p>
-                    <div className="experience-responsibilities">
-                      <ul>
-                        {job.responsibilities.map((responsibility, idx) => (
-                          <li key={idx}>{responsibility}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              );
-            })}
-          </div>
-
-          {/* Floating Particles */}
-          <div className="roadmap-particles">
-            {[...Array(8)].map((_, i) => (
+      
+      <div className="experience-container" ref={containerRef}>
+        <div className="experience-cards-grid">
+          {workExperience.map((job, index) => {
+            const isVisible = visibleCards.has(job.id);
+            
+            return (
               <div
-                key={i}
-                className="particle"
-                style={{
-                  '--delay': `${i * 0.5}s`,
-                  '--duration': `${3 + i * 0.5}s`
+                key={job.id}
+                className={`experience-card-wrapper ${isVisible ? 'card-visible' : 'card-hidden'}`}
+                data-card-id={job.id}
+                style={{ 
+                  '--delay': `${index * 0.2}s`,
+                  '--index': index 
                 }}
-              ></div>
-            ))}
-          </div>
+              >
+                <ExperienceCard experience={job} index={index} />
+              </div>
+            );
+          })}
+        </div>
+        
+        {/* Background decorative elements */}
+        <div className="experience-bg-elements">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-particle"
+              style={{
+                '--delay': `${i * 0.8}s`,
+                '--duration': `${4 + i * 0.3}s`
+              }}
+            ></div>
+          ))}
         </div>
       </div>
     </section>
