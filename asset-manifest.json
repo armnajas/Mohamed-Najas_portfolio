@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Mohamed-Najas_portfolio/static/css/main.0f90d4df.css",
+    "main.js": "/Mohamed-Najas_portfolio/static/js/main.72507ac0.js",
+    "index.html": "/Mohamed-Najas_portfolio/index.html",
+    "main.0f90d4df.css.map": "/Mohamed-Najas_portfolio/static/css/main.0f90d4df.css.map",
+    "main.72507ac0.js.map": "/Mohamed-Najas_portfolio/static/js/main.72507ac0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0f90d4df.css",
+    "static/js/main.72507ac0.js"
+  ]
+}
