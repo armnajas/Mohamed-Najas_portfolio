@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { personalInfo, socialLinks } from '../data/portfolioData';
 import OptimizedImage from './OptimizedImage';
 
@@ -10,6 +10,58 @@ const Hero = () => {
   const imageRef = useRef(null);
   const buttonRef = useRef(null);
   const backgroundRef = useRef(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  // Function to handle CV download
+  const handleCVDownload = async (e) => {
+    e.preventDefault();
+    setIsDownloading(true);
+    
+    try {
+      // First, try to fetch the file to ensure it's accessible
+      const response = await fetch(personalInfo.resume);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Get the blob data
+      const blob = await response.blob();
+      
+      // Create a blob URL
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'Mohamed_Najas_CV.pdf';
+      
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the blob URL
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Error downloading CV:', error);
+      // Fallback: try direct download
+      try {
+        const link = document.createElement('a');
+        link.href = personalInfo.resume;
+        link.download = 'Mohamed_Najas_CV.pdf';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (fallbackError) {
+        console.error('Fallback download failed:', fallbackError);
+        // Final fallback: open in new tab
+        window.open(personalInfo.resume, '_blank');
+      }
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
 
 
@@ -110,20 +162,29 @@ const Hero = () => {
 
           {/* Hero Action Buttons */}
           <div className="hero-action-buttons">
-            <a
+            <button
               ref={buttonRef}
-              href={personalInfo.resume}
-              className="action-btn primary-action magnetic-btn"
-              download="CV.pdf"
+              onClick={handleCVDownload}
+              className={`action-btn primary-action magnetic-btn ${isDownloading ? 'downloading' : ''}`}
+              type="button"
+              disabled={isDownloading}
             >
               <div className="btn-icon">
-                <i className="fas fa-download"></i>
+                {isDownloading ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  <i className="fas fa-download"></i>
+                )}
               </div>
               <div className="btn-content">
-                <span className="btn-title">View Resume</span>
-                <span className="btn-subtitle">Download PDF</span>
+                <span className="btn-title">
+                  {isDownloading ? 'Downloading...' : 'View Resume'}
+                </span>
+                <span className="btn-subtitle">
+                  {isDownloading ? 'Please wait' : 'Download PDF'}
+                </span>
               </div>
-            </a>
+            </button>
 
             <a
               href="#contact"
