@@ -26,10 +26,10 @@ const Hero = () => {
       // Construct the full URL - handle both local and GitHub Pages
       let cvUrl;
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        // Local development
-        cvUrl = window.location.origin + personalInfo.resume;
+        // Local development - use just the filename
+        cvUrl = '/CV.pdf';
       } else {
-        // Production (GitHub Pages) - use relative path
+        // Production (GitHub Pages) - use the full repository path
         cvUrl = personalInfo.resume;
       }
       

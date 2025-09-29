@@ -6,7 +6,7 @@ export const personalInfo = {
   description: "Fourth-year student at Rajarata University of Sri Lanka, Passionate about securing digital infrastructures and developing innovative security solutions.",
   email: "armnajas70@gmail.com",
   profileImage: "/profile.jpg",
-  resume: "/CV.pdf",
+  resume: "/Mohamed-Najas_portfolio/CV.pdf",
 
 };
 
