@@ -20,60 +20,83 @@ const Hero = () => {
     
     try {
       console.log('Starting CV download...');
+      console.log('Resume path:', personalInfo.resume);
       
-      // First, try to fetch the file to ensure it's accessible
-      const response = await fetch(personalInfo.resume);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // Construct the full URL
+      const cvUrl = window.location.origin + personalInfo.resume;
+      console.log('Full CV URL:', cvUrl);
+      
+      // Test if the file is accessible first
+      try {
+        const testResponse = await fetch(cvUrl, { method: 'HEAD' });
+        console.log('File accessibility test:', testResponse.status);
+        
+        if (!testResponse.ok) {
+          throw new Error(`File not accessible: ${testResponse.status}`);
+        }
+      } catch (testError) {
+        console.warn('File accessibility test failed:', testError);
+        // Continue anyway, some servers don't support HEAD requests
       }
       
-      console.log('CV file fetched successfully');
-      
-      // Get the blob data
-      const blob = await response.blob();
-      
-      // Create a blob URL
-      const blobUrl = window.URL.createObjectURL(blob);
-      
-      // Create a temporary link element
+      // Method 1: Direct download with proper URL
       const link = document.createElement('a');
-      link.href = blobUrl;
+      link.href = cvUrl;
       link.download = 'Mohamed_Najas_CV.pdf';
+      link.style.display = 'none';
       
-      // Append to body, click, and remove
+      // Add to DOM, click, and remove
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       
-      // Clean up the blob URL
-      window.URL.revokeObjectURL(blobUrl);
-      
-      console.log('CV download initiated successfully');
+      console.log('Direct download initiated');
       setDownloadStatus('Download started successfully!');
       setTimeout(() => setDownloadStatus(''), 3000);
-    } catch (error) {
-      console.error('Error downloading CV:', error);
-      setDownloadStatus('Download failed, trying alternative method...');
       
-      // Fallback: try direct download
+    } catch (error) {
+      console.error('Error with direct download:', error);
+      setDownloadStatus('Trying alternative method...');
+      
+      // Method 2: Try fetch + blob approach
       try {
-        console.log('Trying fallback download method...');
+        console.log('Trying fetch + blob method...');
+        const response = await fetch(personalInfo.resume);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const blob = await response.blob();
+        console.log('Blob size:', blob.size, 'bytes');
+        
+        if (blob.size === 0) {
+          throw new Error('Downloaded file is empty');
+        }
+        
+        const blobUrl = window.URL.createObjectURL(blob);
+        
         const link = document.createElement('a');
-        link.href = personalInfo.resume;
+        link.href = blobUrl;
         link.download = 'Mohamed_Najas_CV.pdf';
-        link.target = '_blank';
+        link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        console.log('Fallback download initiated');
-        setDownloadStatus('Download started via fallback method!');
+        
+        window.URL.revokeObjectURL(blobUrl);
+        
+        console.log('Fetch + blob download successful');
+        setDownloadStatus('Download completed via alternative method!');
         setTimeout(() => setDownloadStatus(''), 3000);
-      } catch (fallbackError) {
-        console.error('Fallback download failed:', fallbackError);
-        // Final fallback: open in new tab
-        console.log('Opening CV in new tab as final fallback...');
-        window.open(personalInfo.resume, '_blank');
+        
+      } catch (fetchError) {
+        console.error('Fetch method failed:', fetchError);
         setDownloadStatus('Opening CV in new tab...');
+        
+        // Method 3: Final fallback - open in new tab
+        const cvUrl = window.location.origin + personalInfo.resume;
+        window.open(cvUrl, '_blank');
+        console.log('Opened CV in new tab as final fallback');
         setTimeout(() => setDownloadStatus(''), 3000);
       }
     } finally {
