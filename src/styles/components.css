@@ -1,9 +1,9 @@
 /* ===== HERO SECTION ===== */
 .hero-section {
-  min-height: 90vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   position: relative;
   overflow: hidden;
   gap: 3rem;
@@ -15,14 +15,22 @@
 @media (max-width: 1200px) {
   .hero-section {
     gap: 2.5rem;
-    padding: 1.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .hero-left {
+    padding: 2.5rem 0;
   }
 }
 
 @media (max-width: 992px) {
   .hero-section {
     gap: 2rem;
-    padding: 1.25rem;
+    padding: 2rem 1.25rem;
+  }
+  
+  .hero-left {
+    padding: 2rem 0;
   }
 
   .action-btn {
@@ -43,7 +51,11 @@
 @media (max-width: 768px) {
   .hero-section {
     gap: 1.5rem;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+  }
+  
+  .hero-left {
+    padding: 1.5rem 0;
   }
 
   .action-btn {
@@ -63,7 +75,11 @@
 @media (max-width: 480px) {
   .hero-section {
     gap: 1rem;
-    padding: 0.8rem;
+    padding: 1rem 0.8rem;
+  }
+  
+  .hero-left {
+    padding: 1rem 0;
   }
 
   .action-btn {
@@ -91,6 +107,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 3rem 0;
 }
 
 .hero-right {
@@ -402,6 +419,8 @@
   position: relative;
   width: 320px;
   height: 320px;
+  margin: 2rem 0;
+  padding: 1rem;
 }
 
 .orbit-system {
@@ -755,13 +774,22 @@
 .certificates-section {
   padding: 6rem 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   contain: layout style paint;
   will-change: transform;
 }
 
 .badges-section {
   margin-top: 4rem;
+  position: relative;
+  z-index: 10;
+  overflow: visible;
+}
+
+.badges-section .parallax-container {
+  position: relative;
+  z-index: 10;
+  overflow: visible;
 }
 
 .section-subtitle {
@@ -773,31 +801,97 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  display: block;
+}
+
+/* Simple styling for badges section title */
+.badges-section .section-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #a0a0a0;
+  position: relative;
+  z-index: 10;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+  text-shadow: none;
+}
+
+/* Simple fallback for AppleTextReveal issues */
+.badges-section .apple-text-reveal {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  color: #a0a0a0 !important;
+  text-shadow: none;
+}
+
+.badges-section .word-reveal {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+  color: #a0a0a0 !important;
+  text-shadow: none;
+}
+
+/* Simple title styling */
+.badges-section h2,
+.badges-section h3,
+.badges-section .section-subtitle,
+.badges-section .apple-text-reveal,
+.badges-section .word-reveal {
+  color: #a0a0a0 !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .certificates-wrapper {
   width: 100%;
   padding: 20px 0; /* Extra padding to prevent clipping */
   overflow: visible;
+  touch-action: pan-x; /* Allow horizontal panning */
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.certificates-wrapper:active {
+  cursor: grabbing;
+}
+
+.certificates-wrapper:hover {
+  cursor: grab;
 }
 
 .certificates-container {
   width: 100%;
   overflow: hidden;
-  mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
-  -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
 }
 
 .certificates-track {
   display: flex;
   gap: 2rem;
-  /* Much slower animation for better performance */
-  animation: scrollRightToLeft 60s linear infinite;
+  /* True infinite scrolling - seamless loop */
+  animation: scrollRightToLeftInfinite 60s linear infinite;
+  animation-play-state: running;
   width: fit-content;
   padding: 15px 0;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transition: transform 0.1s ease-out;
 }
 
 
@@ -807,7 +901,7 @@
     transform: translate3d(0%, 0, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
@@ -851,6 +945,9 @@
   transform-style: preserve-3d;
   text-align: center;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .certificate-item::before {
@@ -946,6 +1043,18 @@
 .certificates-wrapper-reverse {
   margin-top: 3rem;
   position: relative;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-x;
+}
+
+.certificates-wrapper-reverse:active {
+  cursor: grabbing;
+}
+
+.certificates-wrapper-reverse:hover {
+  cursor: grab;
 }
 
 .certificates-wrapper-reverse::before {
@@ -964,19 +1073,40 @@
 }
 
 .certificates-track-reverse {
-  animation: scrollLeftToRight 25s linear infinite;
+  animation: scrollLeftToRightInfinite 50s linear infinite;
+  animation-play-state: running;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transition: transform 0.1s ease-out;
 }
 
 /* Removed hover pause - animations continue continuously */
 
 @keyframes scrollLeftToRight {
   from {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
   to {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+/* ===== TRUE INFINITE SCROLLING ANIMATIONS ===== */
+@keyframes scrollRightToLeftInfinite {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes scrollLeftToRightInfinite {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
     transform: translate3d(0%, 0, 0);
   }
 }
@@ -1030,11 +1160,22 @@
   max-width: 120px;
   padding: 0;
   gap: 0;
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
+  background: 
+    linear-gradient(90deg, 
+      rgba(147, 197, 253, 0.2) 0%, 
+      rgba(191, 219, 255, 0.1) 25%, 
+      rgba(147, 197, 253, 0.2) 50%, 
+      rgba(191, 219, 255, 0.1) 75%, 
+      rgba(147, 197, 253, 0.2) 100%);
+  background-size: 200% 100%;
+  background-position: -100% 0%;
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(147, 197, 253, 0.2);
   transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
   z-index: 1;
@@ -1045,6 +1186,7 @@
   justify-content: center;
   flex-shrink: 0;
   will-change: transform, opacity;
+  animation: badgeFlow 3s linear infinite;
 }
 
 .second-row-image-item:hover {
@@ -1090,6 +1232,28 @@
   .languages-card {
     padding: 3rem;
   }
+
+  /* Certificate items tablet sizing */
+  .certificate-item {
+    min-width: 190px;
+    max-width: 190px;
+    height: 240px;
+    padding: 1.2rem;
+  }
+
+  .certificate-logo {
+    width: 150px;
+    height: 115px;
+  }
+
+  .certificate-info h4 {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+
+  .certificate-info p {
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1110,6 +1274,28 @@
   .profile-section p {
     text-align: left;
     font-size: 1rem;
+  }
+
+  /* Certificate items mobile sizing */
+  .certificate-item {
+    min-width: 160px;
+    max-width: 160px;
+    height: 200px;
+    padding: 1rem;
+  }
+
+  .certificate-logo {
+    width: 120px;
+    height: 90px;
+  }
+
+  .certificate-info h4 {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .certificate-info p {
+    font-size: 0.7rem;
   }
 
   .certificate-item-image-only {
@@ -1178,6 +1364,28 @@
     font-size: 0.9rem;
   }
 
+  /* Certificate items extra small mobile sizing */
+  .certificate-item {
+    min-width: 140px;
+    max-width: 140px;
+    height: 180px;
+    padding: 0.8rem;
+  }
+
+  .certificate-logo {
+    width: 100px;
+    height: 75px;
+  }
+
+  .certificate-info h4 {
+    font-size: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .certificate-info p {
+    font-size: 0.65rem;
+  }
+
   .certificate-item-image-only {
     min-width: 80px;
     max-width: 80px;
@@ -1199,7 +1407,7 @@
   }
 
   .certificates-track-reverse {
-    animation: scrollLeftToRight 12s linear infinite;
+    animation: scrollLeftToRightInfinite 50s linear infinite;
   }
 
   .certificate-modal {
@@ -1346,6 +1554,15 @@ body.modal-open {
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes badgeFlow {
+  0% {
+    background-position: -100% 0%;
+  }
+  100% {
+    background-position: 100% 0%;
   }
 }
 

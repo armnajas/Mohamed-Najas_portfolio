@@ -6,6 +6,7 @@ import { certificates, secondRowImages } from '../data/portfolioData';
 import AppleTextReveal from './AppleTextReveal';
 import ParallaxContainer from './ParallaxContainer';
 import OptimizedImage from './OptimizedImage';
+import useTouchScroll from '../hooks/useTouchScroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,24 @@ const Certificates = () => {
   const firstRowRef = useRef(null);
   const badgesRowRef = useRef(null);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
+
+  // Touch scroll functionality for certificates
+  const certificatesTouchScroll = useTouchScroll({
+    autoPlay: true,
+    direction: 'right',
+    speed: 0.2,
+    pauseOnHover: true,
+    pauseOnTouch: true
+  });
+
+  // Touch scroll functionality for badges
+  const badgesTouchScroll = useTouchScroll({
+    autoPlay: true,
+    direction: 'left',
+    speed: 0.15,
+    pauseOnHover: true,
+    pauseOnTouch: true
+  });
 
   const openModal = (certificate) => {
     // Store current scroll position
@@ -60,11 +79,11 @@ const Certificates = () => {
 
 
 
-  // Reduce duplications for better performance while maintaining smooth scrolling
-  const duplicatedCertificates = [...certificates, ...certificates];
+  // Increase duplications to ensure smooth scrolling
+  const duplicatedCertificates = [...certificates, ...certificates, ...certificates, ...certificates];
 
-  // Reduce second row duplications for better performance
-  const secondRowDuplicationCount = secondRowImages.length < 5 ? 4 : 2;
+  // Increase second row duplications to ensure smooth scrolling
+  const secondRowDuplicationCount = secondRowImages.length < 5 ? 6 : 4;
   const duplicatedSecondRowImages = Array(secondRowDuplicationCount).fill(secondRowImages).flat();
 
   // Prevent body scroll when modal is open
@@ -122,39 +141,16 @@ const Certificates = () => {
     };
   }, []);
 
-  // Intersection Observer to pause animations when not in view
+  // Ensure animations are always running
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Pause/resume animations based on visibility
-        if (firstRowRef.current && badgesRowRef.current) {
-          const firstTrack = firstRowRef.current;
-          const badgesTrack = badgesRowRef.current;
-          
-          if (entry.isIntersecting) {
-            firstTrack.style.animationPlayState = 'running';
-            badgesTrack.style.animationPlayState = 'running';
-          } else {
-            firstTrack.style.animationPlayState = 'paused';
-            badgesTrack.style.animationPlayState = 'paused';
-          }
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px'
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (firstRowRef.current && badgesRowRef.current) {
+      const firstTrack = firstRowRef.current;
+      const badgesTrack = badgesRowRef.current;
+      
+      // Ensure animations are always running
+      firstTrack.style.animationPlayState = 'running';
+      badgesTrack.style.animationPlayState = 'running';
     }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
   }, []);
 
   useEffect(() => {

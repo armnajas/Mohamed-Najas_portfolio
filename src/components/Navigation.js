@@ -73,9 +73,15 @@ const Navigation = () => {
     e.preventDefault();
     const targetId = href.substring(1);
 
-    // Close mobile menu
+    // Close mobile menu and reset body styles
     setMobileMenuOpen(false);
-
+    const scrollY = document.body.style.top;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
+    document.body.classList.remove('mobile-menu-open');
+    
     if (targetId === 'home') {
       scrollTo(0);
     } else {
@@ -86,23 +92,55 @@ const Navigation = () => {
         if (targetId === 'certificates') extraPadding = 80;
         if (targetId === 'qualifications') extraPadding = 80;
 
-        scrollTo(targetElement, {
-          offset: -extraPadding,
-          duration: 1.5
-        });
+        // Restore scroll position first, then scroll to target
+        if (scrollY) {
+          window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+        
+        setTimeout(() => {
+          scrollTo(targetElement, {
+            offset: -extraPadding,
+            duration: 1.5
+          });
+        }, 100);
       }
     }
   };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+    
+    // Prevent background scrolling and hide content when menu is open
+    if (!mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.classList.remove('mobile-menu-open');
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
   };
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mobileMenuOpen && !event.target.closest('.nav-menu') && !event.target.closest('.nav-toggle')) {
+      if (mobileMenuOpen && !event.target.closest('.nav-menu') && !event.target.closest('.nav-toggle') && !event.target.closest('.mobile-menu-close')) {
         setMobileMenuOpen(false);
+        // Reset body styles when closing
+        const scrollY = document.body.style.top;
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        document.body.classList.remove('mobile-menu-open');
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
       }
     };
 
@@ -116,21 +154,45 @@ const Navigation = () => {
     <nav className={`top-navigation ${isScrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         <div className="nav-brand">
-          <span className="brand-text">MN</span>
+          {/* Brand text removed */}
         </div>
         <ul className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`}>
-          {navigation.map((item) => (
-            <li key={item.name}>
-              <a
-                href={item.href}
-                className={`nav-item ${activeSection === item.href.substring(1) ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, item.href)}
-              >
-                <i className={item.icon}></i>
-                <span>{item.name}</span>
-              </a>
-            </li>
-          ))}
+          {/* Close button for mobile menu */}
+          <div className="mobile-menu-close" onClick={toggleMobileMenu}>
+            <i className="fas fa-times"></i>
+          </div>
+          
+          {/* Desktop navigation items */}
+          <div className="desktop-menu-items">
+            {navigation.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className={`nav-item ${activeSection === item.href.substring(1) ? 'active' : ''}`}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                >
+                  <i className={item.icon}></i>
+                  <span>{item.name}</span>
+                </a>
+              </li>
+            ))}
+          </div>
+          
+          {/* Mobile navigation items */}
+          <div className="mobile-menu-items">
+            {navigation.map((item) => (
+              <li key={item.name}>
+                <a
+                  href={item.href}
+                  className={`nav-item ${activeSection === item.href.substring(1) ? 'active' : ''}`}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                >
+                  <i className={item.icon}></i>
+                  <span>{item.name}</span>
+                </a>
+              </li>
+            ))}
+          </div>
         </ul>
 
         <div className="nav-right">

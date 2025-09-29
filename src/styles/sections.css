@@ -688,6 +688,7 @@
   .qualifications-card {
     padding: 1.5rem;
     max-width: 100%;
+    min-width: auto;
   }
 
   .qualifications-card h3 {
@@ -698,61 +699,43 @@
     font-size: 0.9rem;
     line-height: 1.5;
   }
+
+  /* Override min-width for professional qualification cards on tablet */
+  .qualifications-grid .qualifications-divider-card ~ .qualifications-card {
+    min-width: auto;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
   .qualifications-section {
     padding: 4rem 0;
+    overflow: visible;
   }
   
   .qualifications-grid:has(.qualifications-divider-card) {
     grid-template-columns: 1fr;
-    gap: 1.2rem;
+    gap: 1rem;
     max-width: 100%;
     padding: 0 1rem;
-  }
-
-  .qualifications-card {
-    padding: 1.2rem;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .qualifications-card h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .qualifications-card p {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-  }
-  
-  .qualifications-card .company,
-  .qualifications-card .duration {
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .qualifications-section {
-    padding: 3rem 0;
-  }
-  
-  .qualifications-grid:has(.qualifications-divider-card) {
-    gap: 1rem;
-    padding: 0 0.8rem;
+    overflow: visible;
   }
 
   .qualifications-card {
     padding: 1rem;
-    border-radius: 16px;
+    max-width: 100%;
+    margin: 0;
+    min-height: auto;
+    min-width: auto;
+    width: 100%;
   }
 
   .qualifications-card h3 {
     font-size: 0.9rem;
     margin-bottom: 0.4rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .qualifications-card p {
@@ -765,14 +748,173 @@
   .qualifications-card .duration {
     font-size: 0.75rem;
   }
+
+  .qualifications-card .card-main-info {
+    gap: 0.5rem;
+  }
+
+  .qualifications-card .card-header {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Override min-width for professional qualification cards on mobile */
+  .qualifications-grid .qualifications-divider-card ~ .qualifications-card {
+    min-width: auto;
+    max-width: 100%;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  /* Ensure title text doesn't overflow */
+  .qualifications-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .qualifications-section {
+    padding: 3rem 0;
+    overflow: visible;
+  }
+  
+  .qualifications-grid:has(.qualifications-divider-card) {
+    gap: 0.8rem;
+    padding: 0 0.8rem;
+    overflow: visible;
+  }
+
+  .qualifications-card {
+    padding: 0.8rem;
+    border-radius: 12px;
+    min-height: auto;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .qualifications-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+    line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .qualifications-card p {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+  
+  .qualifications-card .company,
+  .qualifications-card .duration {
+    font-size: 0.7rem;
+  }
+
+  .qualifications-card .card-main-info {
+    gap: 0.4rem;
+  }
+
+  .qualifications-card .card-header {
+    margin-bottom: 0.4rem;
+  }
+
+  .qualifications-card .provider-logo {
+    width: 40px;
+    height: 40px;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  /* Override min-width for professional qualification cards on small mobile */
+  .qualifications-grid .qualifications-divider-card ~ .qualifications-card {
+    min-width: auto;
+    max-width: 100%;
+    padding: 0.8rem;
+    width: 100%;
+  }
   
   .qualifications-divider-card {
-    padding: 0.8rem 1rem;
-    margin: 0.5rem 0;
+    padding: 0.6rem 0.8rem;
+    margin: 0.4rem 0;
   }
   
   .divider-card-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Ensure title text doesn't overflow on small screens */
+  .qualifications-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    font-size: 0.85rem;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+  .qualifications-grid:has(.qualifications-divider-card) {
+    gap: 0.6rem;
+    padding: 0 0.6rem;
+    overflow: visible;
+  }
+
+  .qualifications-card {
+    padding: 0.6rem;
+    border-radius: 10px;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .qualifications-card h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .qualifications-card p {
+    font-size: 0.7rem;
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+  
+  .qualifications-card .company,
+  .qualifications-card .duration {
+    font-size: 0.65rem;
+  }
+
+  .qualifications-card .card-main-info {
+    gap: 0.3rem;
+  }
+
+  .qualifications-card .card-header {
+    margin-bottom: 0.3rem;
+  }
+
+  .qualifications-card .provider-logo {
+    width: 35px;
+    height: 35px;
+    top: 0.4rem;
+    right: 0.4rem;
+  }
+
+  /* Override min-width for professional qualification cards on extra small mobile */
+  .qualifications-grid .qualifications-divider-card ~ .qualifications-card {
+    min-width: auto;
+    max-width: 100%;
+    padding: 0.6rem;
+    width: 100%;
+  }
+
+  /* Ensure title text doesn't overflow on extra small screens */
+  .qualifications-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    font-size: 0.8rem;
   }
 }
 
@@ -805,7 +947,7 @@
 /* Professional qualification cards - responsive sizing */
 .qualifications-grid .qualifications-divider-card ~ .qualifications-card {
   max-width: 550px;
-  min-width: 500px;
+  min-width: 300px;
   padding: 2rem;
   width: 100%;
   justify-self: center;
@@ -1145,6 +1287,7 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .qualifications-title {
@@ -1153,6 +1296,9 @@
   color: var(--text);
   margin-bottom: 0;
   flex: 1;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Inline Campus Logos */
