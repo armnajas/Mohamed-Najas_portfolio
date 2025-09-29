@@ -364,6 +364,37 @@
   to { transform: rotate(360deg); }
 }
 
+/* ===== DOWNLOAD STATUS MESSAGE ===== */
+.download-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  color: #00d4ff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.download-status i {
+  font-size: 1rem;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Hero Background Elements */
 .hero-background-elements {
   position: absolute;

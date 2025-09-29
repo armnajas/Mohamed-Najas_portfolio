@@ -11,6 +11,7 @@ const Hero = () => {
   const buttonRef = useRef(null);
   const backgroundRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadStatus, setDownloadStatus] = useState('');
 
   // Function to handle CV download
   const handleCVDownload = async (e) => {
@@ -18,11 +19,15 @@ const Hero = () => {
     setIsDownloading(true);
     
     try {
+      console.log('Starting CV download...');
+      
       // First, try to fetch the file to ensure it's accessible
       const response = await fetch(personalInfo.resume);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
+      console.log('CV file fetched successfully');
       
       // Get the blob data
       const blob = await response.blob();
@@ -42,10 +47,17 @@ const Hero = () => {
       
       // Clean up the blob URL
       window.URL.revokeObjectURL(blobUrl);
+      
+      console.log('CV download initiated successfully');
+      setDownloadStatus('Download started successfully!');
+      setTimeout(() => setDownloadStatus(''), 3000);
     } catch (error) {
       console.error('Error downloading CV:', error);
+      setDownloadStatus('Download failed, trying alternative method...');
+      
       // Fallback: try direct download
       try {
+        console.log('Trying fallback download method...');
         const link = document.createElement('a');
         link.href = personalInfo.resume;
         link.download = 'Mohamed_Najas_CV.pdf';
@@ -53,10 +65,16 @@ const Hero = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        console.log('Fallback download initiated');
+        setDownloadStatus('Download started via fallback method!');
+        setTimeout(() => setDownloadStatus(''), 3000);
       } catch (fallbackError) {
         console.error('Fallback download failed:', fallbackError);
         // Final fallback: open in new tab
+        console.log('Opening CV in new tab as final fallback...');
         window.open(personalInfo.resume, '_blank');
+        setDownloadStatus('Opening CV in new tab...');
+        setTimeout(() => setDownloadStatus(''), 3000);
       }
     } finally {
       setIsDownloading(false);
@@ -185,6 +203,14 @@ const Hero = () => {
                 </span>
               </div>
             </button>
+            
+            {/* Download Status Message */}
+            {downloadStatus && (
+              <div className="download-status">
+                <i className="fas fa-info-circle"></i>
+                <span>{downloadStatus}</span>
+              </div>
+            )}
 
             <a
               href="#contact"
