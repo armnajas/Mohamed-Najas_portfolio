@@ -33,7 +33,13 @@ const Hero = () => {
         cvUrl = personalInfo.resume;
       }
       
+      // Add cache busting parameter to force fresh download
+      const cacheBuster = `?v=${Date.now()}`;
+      cvUrl += cacheBuster;
+      
       console.log('Full CV URL:', cvUrl);
+      console.log('Current hostname:', window.location.hostname);
+      console.log('Resume path from data:', personalInfo.resume);
       
       // Method 1: Try fetch + blob approach first (most reliable for GitHub Pages)
       try {
@@ -90,12 +96,36 @@ const Hero = () => {
           
         } catch (directError) {
           console.error('Direct download failed:', directError);
-          setDownloadStatus('Opening CV in new tab...');
+          setDownloadStatus('Trying GitHub Pages direct URL...');
           
-          // Method 3: Final fallback - open in new tab
-          window.open(cvUrl, '_blank');
-          console.log('Opened CV in new tab as final fallback');
-          setTimeout(() => setDownloadStatus(''), 3000);
+          // Method 3: Try direct GitHub Pages URL
+          try {
+            const githubPagesUrl = 'https://armnajas.github.io/Mohamed-Najas_portfolio/CV.pdf';
+            console.log('Trying direct GitHub Pages URL:', githubPagesUrl);
+            
+            const link = document.createElement('a');
+            link.href = githubPagesUrl;
+            link.download = 'Mohamed_Najas_CV.pdf';
+            link.target = '_blank';
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            console.log('GitHub Pages direct download initiated');
+            setDownloadStatus('Download started via GitHub Pages URL!');
+            setTimeout(() => setDownloadStatus(''), 3000);
+            
+          } catch (githubError) {
+            console.error('GitHub Pages direct download failed:', githubError);
+            setDownloadStatus('Opening CV in new tab...');
+            
+            // Method 4: Final fallback - open in new tab
+            window.open('https://armnajas.github.io/Mohamed-Najas_portfolio/CV.pdf', '_blank');
+            console.log('Opened CV in new tab as final fallback');
+            setTimeout(() => setDownloadStatus(''), 3000);
+          }
         }
       }
       
@@ -105,7 +135,7 @@ const Hero = () => {
       
       // Ultimate fallback
       try {
-        window.open(personalInfo.resume, '_blank');
+        window.open('https://armnajas.github.io/Mohamed-Najas_portfolio/CV.pdf', '_blank');
         console.log('Opened CV in new tab as ultimate fallback');
         setTimeout(() => setDownloadStatus(''), 3000);
       } catch (finalError) {
